@@ -1,0 +1,218 @@
+================================================================================
+         AI WORKSHOP - QUICK START GUIDE FOR WINDOWS USERS
+================================================================================
+
+This folder contains scripts to check and install all required tools for the
+AI workshop. Choose ONE of the options below based on your preference.
+
+================================================================================
+OPTION 1: SIMPLE CHECK (No Installation)
+================================================================================
+
+📄 File to run: check-environment.bat
+
+✅ What it does:
+   - Checks if all required tools are installed
+   - Shows you what's missing
+   - Provides download links
+   - Does NOT install anything
+
+📝 How to use:
+   1. Double-click "check-environment.bat"
+   2. Read the results
+   3. Install missing tools manually using provided links
+
+✨ Best for: Users who want to see what's missing first
+
+================================================================================
+OPTION 2: INTERACTIVE CHECK & INSTALL (Recommended)
+================================================================================
+
+📄 File to run: check-environment.ps1
+
+✅ What it does:
+   - Checks if all required tools are installed
+   - Asks if you want to install each missing tool
+   - Automatically installs tools you approve
+   - Creates a detailed log file
+
+📝 How to use:
+   1. Right-click "check-environment.ps1"
+   2. Select "Run with PowerShell"
+   3. If you get an error, see "Troubleshooting" below
+   4. Follow the prompts (Y = Yes, N = No)
+   5. Restart your terminal after installation
+
+✨ Best for: Most users - gives you control over what to install
+
+================================================================================
+OPTION 3: INSTALL EVERYTHING (Advanced)
+================================================================================
+
+📄 File to run: quick-install-all.ps1
+
+⚠️  WARNING: This installs ALL tools without asking!
+
+✅ What it does:
+   - Installs ALL required tools automatically
+   - Git, Java, Maven, Python, Node.js, VS Code
+   - Installs Python packages
+   - Takes 10-15 minutes
+
+📝 How to use:
+   1. Right-click "quick-install-all.ps1"
+   2. Select "Run with PowerShell"
+   3. Type "YES" (in capitals) to confirm
+   4. Wait for installation to complete
+   5. RESTART your computer when done
+
+✨ Best for: Users who want everything installed quickly
+
+================================================================================
+TROUBLESHOOTING: "Cannot run script" Error
+================================================================================
+
+If you get an error about "cannot be loaded" or "execution policy":
+
+1. Press Win + X
+2. Select "Windows PowerShell (Admin)" or "Terminal (Admin)"
+3. Copy and paste this command:
+
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+4. Press Enter, then type Y and press Enter again
+5. Close PowerShell
+6. Try running the script again
+
+================================================================================
+WHAT GETS CHECKED/INSTALLED
+================================================================================
+
+✔️ REQUIRED TOOLS:
+   • Git              - Version control
+   • Java JDK 17+     - Java development
+   • Maven            - Java build tool
+   • Python 3.8+      - Python programming
+   • pip              - Python package manager
+   • Node.js          - JavaScript runtime
+   • IDE              - VS Code or IntelliJ
+
+⚙️ OPTIONAL TOOLS:
+   • Docker Desktop   - Container platform
+
+📦 PYTHON PACKAGES:
+   • openai           - OpenAI API client
+   • requests         - HTTP requests
+   • python-dotenv    - Environment variables
+
+================================================================================
+AFTER INSTALLATION
+================================================================================
+
+❗ IMPORTANT: You MUST restart your terminal (or computer) after installing
+             any tools for them to work properly!
+
+To verify everything is installed:
+   1. Close and reopen your terminal
+   2. Run "check-environment.bat" or "check-environment.ps1" again
+   3. All items should show green checkmarks ✓
+
+================================================================================
+QUICK REFERENCE - CHECK IF TOOLS ARE INSTALLED
+================================================================================
+
+Open PowerShell or Command Prompt and type these commands:
+
+   git --version          → Check Git
+   java -version          → Check Java
+   mvn -version           → Check Maven
+   python --version       → Check Python
+   pip --version          → Check pip
+   node --version         → Check Node.js
+   code --version         → Check VS Code
+   docker --version       → Check Docker
+
+If you get "command not found" or "not recognized", that tool is not installed.
+
+================================================================================
+MANUAL INSTALLATION LINKS
+================================================================================
+
+If automatic installation doesn't work, download and install manually:
+
+Git:          https://git-scm.com/download/win
+Java:         https://adoptium.net/
+Maven:        https://maven.apache.org/download.cgi
+Python:       https://www.python.org/downloads/
+Node.js:      https://nodejs.org/
+VS Code:      https://code.visualstudio.com/
+Docker:       https://www.docker.com/products/docker-desktop
+
+================================================================================
+WORKSHOP PREPARATION CHECKLIST
+================================================================================
+
+Before the workshop, make sure:
+
+□ All required tools show green checkmarks (✓)
+□ Java version is 17 or higher
+□ Python version is 3.8 or higher
+□ Python packages (openai, requests, python-dotenv) are installed
+□ You have VS Code or IntelliJ IDEA installed
+□ You've restarted your terminal after installations
+□ Docker Desktop is running (if you installed it)
+
+To install Python packages manually:
+   pip install openai requests python-dotenv
+
+================================================================================
+NEED HELP?
+================================================================================
+
+1. Check the detailed README.md file in this folder
+2. Check the log files created by the scripts:
+   - environment-check-log.txt
+   - installation-log.txt
+3. Contact the workshop organizer with the log file
+
+================================================================================
+USEFUL COMMANDS
+================================================================================
+
+# Check Python packages installed:
+pip list
+
+# Install Python package:
+pip install package-name
+
+# Update pip:
+python -m pip install --upgrade pip
+
+# Check Java version:
+java -version
+
+# Check if Git is configured:
+git config --list
+
+# Start Docker:
+Open "Docker Desktop" from Start Menu
+
+================================================================================
+GITHUB REPOSITORIES FOR THE WORKSHOP
+================================================================================
+
+• https://github.com/aise-workshop/jsp2spring-boot-practise
+• https://github.com/openai/openai-java
+• https://github.com/gszhangwei/structured-prompts-driven-development
+• https://github.com/WeiZhang101/agent-backend-demo
+• https://github.com/aise-workshop/tibco-movie-practise
+
+You may want to clone these before the workshop:
+   git clone [repository-url]
+
+================================================================================
+
+                     🚀 Good luck with your AI workshop! 🚀
+
+================================================================================
+

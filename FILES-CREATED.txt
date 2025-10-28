@@ -1,0 +1,296 @@
+================================================================================
+                    AI WORKSHOP ENVIRONMENT CHECK SCRIPTS
+                           Files Created Summary
+================================================================================
+
+This package contains everything you need to check and prepare your Windows
+computer for the AI workshop. Below is a description of each file.
+
+================================================================================
+📋 DOCUMENTATION FILES
+================================================================================
+
+1. README.md
+   • Comprehensive guide with detailed instructions
+   • Explains all tools required
+   • Troubleshooting tips
+   • Manual installation links
+   • Best for: Reading full details
+
+2. QUICK-START-GUIDE.txt
+   • Quick reference guide
+   • Simple, easy-to-follow instructions
+   • All essential info in plain text
+   • Best for: Quick lookup while setting up
+
+3. FILES-CREATED.txt (This file)
+   • Summary of all files in this package
+   • Quick overview of what each file does
+
+================================================================================
+🔧 SCRIPT FILES
+================================================================================
+
+1. check-environment.bat (Batch Script)
+   📝 Type: Windows Batch File (.bat)
+   🎯 Purpose: CHECK ONLY - No installation
+   
+   ✅ What it does:
+      • Checks if all required tools are installed
+      • Shows what's missing with red X marks
+      • Shows what's installed with green checkmarks
+      • Provides download links for missing tools
+      • Creates a log file
+      • Does NOT modify your system
+   
+   🚀 How to run:
+      • Simply double-click the file
+      • No administrator privileges needed (for checking only)
+   
+   👍 Best for:
+      • First-time check to see what you need
+      • Users who want to install tools manually
+      • Computers with restricted permissions
+      • Quick verification after manual installation
+
+================================================================================
+
+2. check-environment.ps1 (PowerShell Script) ⭐ RECOMMENDED
+   📝 Type: PowerShell Script (.ps1)
+   🎯 Purpose: CHECK and OPTIONAL INSTALL
+   
+   ✅ What it does:
+      • Checks if all required tools are installed
+      • ASKS you for each missing tool: "Install this? (Y/N)"
+      • Only installs what YOU approve
+      • Uses Windows Package Manager (winget) for installation
+      • Installs Python packages if Python is available
+      • Creates detailed log file
+   
+   🚀 How to run:
+      • Right-click the file → "Run with PowerShell"
+      • Requires Administrator privileges for installation
+      • May need to enable PowerShell scripts (see troubleshooting)
+   
+   👍 Best for:
+      • Most users - gives you control
+      • Interactive installation process
+      • Automated but supervised setup
+      • Users comfortable with prompts
+
+   ⚙️ Tools it can install:
+      ✓ Git
+      ✓ Java JDK 17
+      ✓ Maven
+      ✓ Python 3.11
+      ✓ Node.js LTS
+      ✓ VS Code
+      ✓ Python packages (openai, requests, python-dotenv)
+
+================================================================================
+
+3. quick-install-all.ps1 (PowerShell Script)
+   📝 Type: PowerShell Script (.ps1)
+   🎯 Purpose: INSTALL ALL - No questions asked
+   
+   ⚠️  WARNING: This installs EVERYTHING automatically!
+   
+   ✅ What it does:
+      • Installs ALL required tools without asking
+      • Only asks for initial confirmation (type "YES")
+      • Skips tools already installed
+      • Installs Python packages automatically
+      • Takes 10-15 minutes
+      • Creates installation log
+   
+   🚀 How to run:
+      • Right-click the file → "Run with PowerShell"
+      • MUST run as Administrator
+      • Type "YES" (in capitals) to confirm
+      • Wait for completion
+      • RESTART computer when done
+   
+   👍 Best for:
+      • Users who want everything installed quickly
+      • Fresh computers with nothing installed
+      • Users who don't want to answer Y/N for each tool
+      • Batch setup for multiple computers
+   
+   ⚙️ Tools it installs:
+      ✓ Git
+      ✓ Java JDK 17
+      ✓ Maven
+      ✓ Python 3.11
+      ✓ Node.js LTS
+      ✓ VS Code
+      ✓ Python packages (openai, requests, python-dotenv)
+
+================================================================================
+📊 COMPARISON TABLE
+================================================================================
+
+Feature                    | .bat    | .ps1 (check) | .ps1 (quick)
+---------------------------|---------|--------------|-------------
+Check installed tools      | ✓ Yes   | ✓ Yes        | ✓ Yes
+Install missing tools      | ✗ No    | ✓ Interactive| ✓ Automatic
+Asks before installing     | N/A     | ✓ Yes        | ✗ No*
+Requires Admin rights      | ✗ No    | ✓ Yes**      | ✓ Yes
+Easy to run                | ✓ Easy  | ✓ Easy       | ⚠️ Careful
+Creates log file           | ✓ Yes   | ✓ Yes        | ✓ Yes
+Best for beginners         | ✓ Yes   | ✓ Yes        | ✗ No
+
+* Only asks for initial confirmation
+** Only for installation, not for checking
+
+================================================================================
+🎯 RECOMMENDED WORKFLOW
+================================================================================
+
+For most users, follow this order:
+
+STEP 1: Initial Check
+   → Run: check-environment.bat
+   → Purpose: See what you need
+   → Time: 1 minute
+
+STEP 2: Interactive Installation (RECOMMENDED)
+   → Run: check-environment.ps1
+   → Purpose: Install missing tools with your approval
+   → Time: 5-10 minutes + download time
+   → OR install manually using links in README.md
+
+STEP 3: Restart
+   → Restart your terminal (or computer)
+   → Purpose: Make new tools available
+
+STEP 4: Verify
+   → Run: check-environment.bat again
+   → Purpose: Confirm everything is installed
+   → Expected: All green checkmarks ✓
+
+Alternative for Advanced Users:
+   → Run: quick-install-all.ps1
+   → Installs everything at once
+   → Restart computer when done
+   → Verify with check-environment.bat
+
+================================================================================
+📁 LOG FILES (Created automatically)
+================================================================================
+
+After running the scripts, you'll see these new files:
+
+• environment-check-log.txt
+  - Created by: check-environment.bat and check-environment.ps1
+  - Contains: Check results, installed versions, missing tools
+  
+• installation-log.txt
+  - Created by: quick-install-all.ps1
+  - Contains: Installation summary, what was installed
+
+These logs are useful if you need help troubleshooting.
+
+================================================================================
+⚙️ SYSTEM REQUIREMENTS
+================================================================================
+
+Minimum Requirements:
+   • Windows 10 (version 1809 or later) or Windows 11
+   • Internet connection
+   • At least 5 GB free disk space
+   • Administrator privileges (for installation only)
+
+For automatic installation (.ps1 scripts):
+   • Windows Package Manager (winget)
+     - Included in Windows 11
+     - Included in Windows 10 (1809+) with updates
+     - Can be installed from Microsoft Store (App Installer)
+
+================================================================================
+🆘 COMMON ISSUES & SOLUTIONS
+================================================================================
+
+Issue: "Cannot run .ps1 script"
+Solution: See "TROUBLESHOOTING" section in QUICK-START-GUIDE.txt
+
+Issue: "winget not found"
+Solution: Update Windows, or install App Installer from Microsoft Store
+
+Issue: "Access Denied"
+Solution: Right-click script → "Run with PowerShell" → Allow admin access
+
+Issue: Tools installed but not working
+Solution: Restart your terminal or computer
+
+Issue: Python packages won't install
+Solution: Run manually: pip install openai requests python-dotenv
+
+================================================================================
+✅ WORKSHOP PREPARATION CHECKLIST
+================================================================================
+
+Before attending the workshop, ensure:
+
+□ Ran one of the check scripts
+□ All required tools show green checkmarks (✓)
+□ Java version 17+
+□ Python version 3.8+
+□ Python packages installed (openai, requests, python-dotenv)
+□ IDE installed (VS Code or IntelliJ IDEA)
+□ Restarted terminal/computer after installations
+□ Docker Desktop running (if installed)
+□ Can access GitHub (not blocked by firewall)
+
+To verify: Open terminal and run these commands:
+   git --version
+   java -version
+   python --version
+   pip list
+
+================================================================================
+📚 ADDITIONAL RESOURCES
+================================================================================
+
+All details can be found in:
+   • README.md - Complete documentation
+   • QUICK-START-GUIDE.txt - Quick reference
+   • Workshop PDF - Original requirements (Untitled.pdf)
+
+Online resources:
+   • Git: https://git-scm.com/
+   • Java: https://adoptium.net/
+   • Python: https://www.python.org/
+   • Node.js: https://nodejs.org/
+   • Docker: https://www.docker.com/
+
+Workshop repositories:
+   • https://github.com/aise-workshop/jsp2spring-boot-practise
+   • https://github.com/openai/openai-java
+   • https://github.com/gszhangwei/structured-prompts-driven-development
+
+================================================================================
+💡 TIPS
+================================================================================
+
+1. Run check-environment.bat FIRST to see what you need
+2. Use check-environment.ps1 for most installations (recommended)
+3. Only use quick-install-all.ps1 if you want everything at once
+4. ALWAYS restart your terminal after installing new tools
+5. Keep the log files - they're helpful for troubleshooting
+6. Read QUICK-START-GUIDE.txt for fast reference
+7. Read README.md for detailed information
+
+================================================================================
+
+                   Your environment check scripts are ready!
+                   
+                   Start with: check-environment.bat
+                   
+                   🚀 Good luck with your AI workshop! 🚀
+
+================================================================================
+Created for: AI Workshop Environment Preparation
+Version: 1.0
+Date: 2025
+================================================================================
+

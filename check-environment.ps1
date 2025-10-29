@@ -6,7 +6,20 @@
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host " AI Workshop Environment Check Script" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "This script will check if all required tools are installed." -ForegroundColor White
+Write-Host "Estimated time: 2-3 minutes (or 10-15 minutes if installing tools)" -ForegroundColor Gray
 Write-Host "========================================`n" -ForegroundColor Cyan
+
+# Check if winget is available (needed for installations)
+$wingetAvailable = $false
+if (Get-Command winget -ErrorAction SilentlyContinue) {
+    $wingetAvailable = $true
+} else {
+    Write-Host "⚠ Warning: winget (Windows Package Manager) is not available." -ForegroundColor Yellow
+    Write-Host "  Automatic installation will not be possible." -ForegroundColor Yellow
+    Write-Host "  You can still check what's installed, but you'll need to install tools manually.`n" -ForegroundColor Gray
+}
 
 # Function to check if a command exists
 function Test-CommandExists {
@@ -29,6 +42,11 @@ function Test-CommandExists {
 # Function to prompt for installation
 function Prompt-Install {
     param($tool)
+    if (-not $wingetAvailable) {
+        Write-Host "  Cannot install automatically - winget is not available" -ForegroundColor Yellow
+        Write-Host "  Please install manually (link provided above)" -ForegroundColor Gray
+        return $false
+    }
     $response = Read-Host "Would you like to install $tool now? (Y/N)"
     return $response -eq 'Y' -or $response -eq 'y'
 }
@@ -49,9 +67,13 @@ if (Test-CommandExists git) {
     $allChecks += @{Name="Git"; Status="MISSING"; Version="N/A"}
     
     if (Prompt-Install "Git") {
-        Write-Host "  Installing Git..." -ForegroundColor Cyan
-        winget install --id Git.Git -e --source winget --silent
-        Write-Host "  Git installed. Please restart your terminal." -ForegroundColor Green
+        Write-Host "  Installing Git (this may take 2-3 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id Git.Git -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ Git installed successfully. Please restart your terminal." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install Git. Please install manually from https://git-scm.com/download/win" -ForegroundColor Red
+        }
     }
 }
 
@@ -65,11 +87,20 @@ if (Test-CommandExists java) {
     $allChecks += @{Name="Java"; Status="OK"; Version=$javaVersion}
     
     # Check Java version (recommend JDK 17 or higher)
-    $versionMatch = $javaVersion -match '(\d+)\.(\d+)'
-    if ($matches) {
+    # Modern Java versions report as "17.x.x" or "openjdk version 17.x.x"
+    if ($javaVersion -match '(\d+)\.(\d+)\.(\d+)') {
+        $majorVersion = [int]$matches[1]
+        # Handle old version format (1.8.x) vs new format (17.x.x)
+        if ($majorVersion -eq 1 -and $matches[2]) {
+            $majorVersion = [int]$matches[2]
+        }
+        if ($majorVersion -lt 17) {
+            Write-Host "  ⚠ Warning: Java version is $majorVersion (below recommended version 17)" -ForegroundColor Yellow
+        }
+    } elseif ($javaVersion -match 'version \"?(\d+)') {
         $majorVersion = [int]$matches[1]
         if ($majorVersion -lt 17) {
-            Write-Host "  ⚠ Warning: Java version is below 17. Recommend JDK 17+" -ForegroundColor Yellow
+            Write-Host "  ⚠ Warning: Java version is $majorVersion (below recommended version 17)" -ForegroundColor Yellow
         }
     }
 } else {
@@ -77,9 +108,13 @@ if (Test-CommandExists java) {
     $allChecks += @{Name="Java"; Status="MISSING"; Version="N/A"}
     
     if (Prompt-Install "Java JDK 17") {
-        Write-Host "  Installing OpenJDK 17..." -ForegroundColor Cyan
-        winget install --id Microsoft.OpenJDK.17 -e --source winget --silent
-        Write-Host "  Java JDK installed. Please restart your terminal." -ForegroundColor Green
+        Write-Host "  Installing OpenJDK 17 (this may take 2-3 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id Microsoft.OpenJDK.17 -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ Java JDK installed successfully. Please restart your terminal." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install Java. Please install manually from https://adoptium.net/" -ForegroundColor Red
+        }
     }
 }
 
@@ -96,9 +131,13 @@ if (Test-CommandExists mvn) {
     $allChecks += @{Name="Maven"; Status="MISSING"; Version="N/A"}
     
     if (Prompt-Install "Maven") {
-        Write-Host "  Installing Maven..." -ForegroundColor Cyan
-        winget install --id Apache.Maven -e --source winget --silent
-        Write-Host "  Maven installed. Please restart your terminal." -ForegroundColor Green
+        Write-Host "  Installing Maven (this may take 1-2 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id Apache.Maven -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ Maven installed successfully. Please restart your terminal." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install Maven. Please install manually from https://maven.apache.org/download.cgi" -ForegroundColor Red
+        }
     }
 }
 
@@ -112,12 +151,17 @@ if (Test-CommandExists python) {
     $allChecks += @{Name="Python"; Status="OK"; Version=$pythonVersion}
     
     # Check Python version (recommend 3.8+)
-    $versionMatch = $pythonVersion -match '(\d+)\.(\d+)'
-    if ($matches) {
+    if ($pythonVersion -match 'Python (\d+)\.(\d+)\.?(\d*)') {
         $majorVersion = [int]$matches[1]
         $minorVersion = [int]$matches[2]
         if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 8)) {
-            Write-Host "  ⚠ Warning: Python version is below 3.8. Recommend Python 3.8+" -ForegroundColor Yellow
+            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (below recommended version 3.8)" -ForegroundColor Yellow
+        }
+    } elseif ($pythonVersion -match '(\d+)\.(\d+)') {
+        $majorVersion = [int]$matches[1]
+        $minorVersion = [int]$matches[2]
+        if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 8)) {
+            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (below recommended version 3.8)" -ForegroundColor Yellow
         }
     }
 } else {
@@ -125,9 +169,13 @@ if (Test-CommandExists python) {
     $allChecks += @{Name="Python"; Status="MISSING"; Version="N/A"}
     
     if (Prompt-Install "Python 3.11") {
-        Write-Host "  Installing Python 3.11..." -ForegroundColor Cyan
-        winget install --id Python.Python.3.11 -e --source winget --silent
-        Write-Host "  Python installed. Please restart your terminal." -ForegroundColor Green
+        Write-Host "  Installing Python 3.11 (this may take 2-3 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id Python.Python.3.11 -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ Python installed successfully. Please restart your terminal." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install Python. Please install manually from https://www.python.org/downloads/" -ForegroundColor Red
+        }
     }
 }
 
@@ -162,9 +210,13 @@ if (Test-CommandExists node) {
     $allChecks += @{Name="Node.js"; Status="MISSING"; Version="N/A"}
     
     if (Prompt-Install "Node.js LTS") {
-        Write-Host "  Installing Node.js LTS..." -ForegroundColor Cyan
-        winget install --id OpenJS.NodeJS.LTS -e --source winget --silent
-        Write-Host "  Node.js installed. Please restart your terminal." -ForegroundColor Green
+        Write-Host "  Installing Node.js LTS (this may take 2-3 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id OpenJS.NodeJS.LTS -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ Node.js installed successfully. Please restart your terminal." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install Node.js. Please install manually from https://nodejs.org/" -ForegroundColor Red
+        }
     }
 }
 
@@ -228,9 +280,13 @@ if (-not $ideFound) {
     
     $response = Read-Host "Would you like to install VS Code? (Y/N)"
     if ($response -eq 'Y' -or $response -eq 'y') {
-        Write-Host "  Installing VS Code..." -ForegroundColor Cyan
-        winget install --id Microsoft.VisualStudioCode -e --source winget --silent
-        Write-Host "  VS Code installed." -ForegroundColor Green
+        Write-Host "  Installing VS Code (this may take 2-3 minutes)..." -ForegroundColor Cyan
+        try {
+            winget install --id Microsoft.VisualStudioCode -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            Write-Host "  ✓ VS Code installed successfully." -ForegroundColor Green
+        } catch {
+            Write-Host "  ✗ Failed to install VS Code. Please install manually from https://code.visualstudio.com/" -ForegroundColor Red
+        }
     }
 }
 
@@ -301,9 +357,34 @@ if ($optionalTools.Count -gt 0) {
 }
 
 Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "Note: If you installed any tools, please restart your terminal/PowerShell" -ForegroundColor Yellow
-Write-Host "for the changes to take effect." -ForegroundColor Yellow
-Write-Host "========================================`n" -ForegroundColor Cyan
+Write-Host " Important Next Steps" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+
+if ($missingTools.Count -gt 0) {
+    Write-Host "`n⚠️  ACTION REQUIRED:" -ForegroundColor Yellow
+    Write-Host "   You are MISSING some required tools!" -ForegroundColor Yellow
+    Write-Host "   Please install them before the workshop.`n" -ForegroundColor Yellow
+} else {
+    Write-Host "`n✅ Great! All required tools are installed." -ForegroundColor Green
+}
+
+$anyInstalled = $false
+foreach ($check in $allChecks) {
+    if ($check.Status -eq "OK" -and $check.Name -ne $null) {
+        $anyInstalled = $true
+        break
+    }
+}
+
+if ($anyInstalled) {
+    Write-Host "`n📋 To activate newly installed tools:" -ForegroundColor Cyan
+    Write-Host "   1. Close ALL PowerShell/Terminal windows" -ForegroundColor White
+    Write-Host "   2. Open a new PowerShell/Terminal" -ForegroundColor White
+    Write-Host "   3. Run this script again to verify" -ForegroundColor White
+    Write-Host "`n   OR simply RESTART YOUR COMPUTER" -ForegroundColor Yellow
+}
+
+Write-Host "`n========================================`n" -ForegroundColor Cyan
 
 # Create a log file
 $logPath = Join-Path $PSScriptRoot "environment-check-log.txt"

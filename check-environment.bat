@@ -7,6 +7,10 @@ setlocal enabledelayedexpansion
 echo ========================================
 echo  AI Workshop Environment Check Script
 echo ========================================
+echo This script will check if all required tools are installed.
+echo Estimated time: 1-2 minutes
+echo Note: This script only CHECKS - it does not install anything.
+echo ========================================
 echo.
 
 set "MISSING_TOOLS="
@@ -203,13 +207,16 @@ echo.
 
 if !ALL_OK! equ 1 (
     echo [SUCCESS] All required tools are installed!
-    echo You are ready for the AI workshop!
+    echo.
+    echo    *** You are ready for the AI workshop! ***
     echo.
 ) else (
     echo [WARNING] Some required tools are missing:
     echo !MISSING_TOOLS!
     echo.
+    echo    *** ACTION REQUIRED ***
     echo Please install the missing tools before the workshop.
+    echo See installation instructions below.
     echo.
 )
 

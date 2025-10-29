@@ -7,19 +7,31 @@ This package contains scripts to help you verify that your Windows computer has 
 The following tools will be checked:
 
 1. **Git** - Version control system
-2. **Java JDK** - Java Development Kit (recommended: JDK 17+)
+2. **Java JDK** - Java Development Kit (recommended: JDK 17 or higher)
 3. **Maven** - Java project management tool
-4. **Python** - Python programming language (recommended: Python 3.8+)
+4. **Python** - Python programming language (recommended: Python 3.8 or higher)
 5. **pip** - Python package installer
 6. **Node.js** - JavaScript runtime (includes npm)
 7. **Docker** - Container platform (optional but recommended)
 8. **IDE** - VS Code or IntelliJ IDEA (recommended)
+
+**⏱️ Time Required:**
+- Check only: ~2 minutes
+- Check + Install all tools: 10-15 minutes
 
 ### Python Packages
 The script will also check for essential Python packages:
 - `openai` - OpenAI API client
 - `requests` - HTTP library
 - `python-dotenv` - Environment variable management
+
+## 🚀 Quick Start - Choose Your Option
+
+**New to workshops?** → Start with **Option 1** to see what you need  
+**Want it done quickly?** → Use **Option 2** for automatic installation  
+**Tech-savvy?** → Check the Manual Installation section  
+
+---
 
 ## 🚀 How to Use
 
@@ -36,7 +48,9 @@ The script will also check for essential Python packages:
 
 This option can automatically install missing tools for you!
 
-#### Step 1: Enable PowerShell Scripts (One-time setup)
+#### Step 1: Enable PowerShell Scripts (One-time setup, if needed)
+
+**Note:** You only need this step if you get a "cannot be loaded" error when trying to run the script.
 
 1. Press `Win + X` and select "Windows PowerShell (Admin)" or "Terminal (Admin)"
 2. Run this command:
@@ -44,6 +58,7 @@ This option can automatically install missing tools for you!
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
    ```
 3. Type `Y` and press Enter
+4. Close PowerShell and proceed to Step 2
 
 #### Step 2: Run the Script
 
@@ -56,8 +71,9 @@ This option can automatically install missing tools for you!
 1. Open PowerShell as Administrator
 2. Navigate to the script folder:
    ```powershell
-   cd "C:\Mac\Home\Desktop\prepare"
+   cd "path\to\your\folder"
    ```
+   (Replace `path\to\your\folder` with the actual location where you extracted these scripts)
 3. Run the script:
    ```powershell
    .\check-environment.ps1
@@ -129,8 +145,12 @@ If you get an error about execution policy:
 If you get a "winget not found" error:
 1. Make sure you're on Windows 10 (1809+) or Windows 11
 2. Update Windows to the latest version
-3. Install the App Installer from Microsoft Store
-4. Alternatively, install tools manually using the links above
+3. Install the "App Installer" from Microsoft Store: [Install App Installer](ms-windows-store://pdp/?productid=9NBLGGH4NNS1)
+4. Alternatively, install tools manually using the links provided in the script output
+
+**Checking your Windows version:**
+- Press `Win + R`, type `winver`, and press Enter
+- You should see version 1809 or higher
 
 ### "Access Denied" Error
 Make sure you're running the PowerShell script as Administrator:
@@ -143,6 +163,21 @@ If Docker is installed but not running:
 1. Open Docker Desktop from the Start menu
 2. Wait for it to start (you'll see a whale icon in the system tray)
 3. Run the check script again
+
+### Tools Not Found After Installation
+If you installed tools but the script still doesn't find them:
+1. **Close ALL terminal/PowerShell windows**
+2. Open a new terminal/PowerShell window
+3. Run the check script again
+4. If still not working, **restart your computer**
+5. The tools should now be available
+
+### Internet Connection Issues
+If installation fails with network errors:
+1. Check your internet connection
+2. Disable VPN if you're using one
+3. Try installing tools manually from the provided links
+4. Check if your firewall/antivirus is blocking downloads
 
 ## 📝 Workshop Preparation Checklist
 
@@ -160,10 +195,24 @@ Before the workshop, make sure:
 
 If you encounter any issues:
 
-1. Check the log file: `environment-check-log.txt`
-2. Try installing tools manually using the provided links
-3. Restart your computer after installing tools
-4. Contact the workshop organizer with details from the log file
+1. **Check the log file**: `environment-check-log.txt` (created in the same folder)
+2. **Try the troubleshooting steps** above
+3. **Restart your computer** after installing tools
+4. **Try manual installation** using the provided links
+5. **Contact the workshop organizer** with:
+   - The log file (`environment-check-log.txt`)
+   - Your Windows version (Press `Win + R`, type `winver`)
+   - Screenshots of any error messages
+
+### Common Error Messages Explained
+
+| Error Message | What It Means | Solution |
+|--------------|---------------|----------|
+| "command not found" | Tool is not installed or not in PATH | Install the tool or restart terminal |
+| "execution policy" | PowerShell scripts are blocked | Run the Set-ExecutionPolicy command (see above) |
+| "Access Denied" | Need administrator privileges | Run PowerShell as Administrator |
+| "winget not found" | Windows Package Manager not available | Update Windows or install tools manually |
+| "network error" | Internet connection problem | Check internet, disable VPN, try manual install |
 
 ## 📚 Additional Resources
 

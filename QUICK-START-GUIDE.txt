@@ -90,9 +90,9 @@ WHAT GETS CHECKED/INSTALLED
 
 ✔️ REQUIRED TOOLS:
    • Git              - Version control
-   • Java JDK 17+     - Java development
+   • Java JDK 17, 21+ - Java development (Required: JDK 17, 21 or higher)
    • Maven            - Java build tool
-   • Python 3.8+      - Python programming
+   • Python 3.12      - Python programming (Required: Python 3.12)
    • pip              - Python package manager
    • Node.js          - JavaScript runtime
    • IDE              - VS Code or IntelliJ
@@ -155,8 +155,8 @@ WORKSHOP PREPARATION CHECKLIST
 Before the workshop, make sure:
 
 □ All required tools show green checkmarks (✓)
-□ Java version is 17 or higher
-□ Python version is 3.8 or higher
+□ Java version is 17, 21 or higher
+□ Python version is 3.12
 □ Python packages (openai, requests, python-dotenv) are installed
 □ You have VS Code or IntelliJ IDEA installed
 □ You've restarted your terminal after installations

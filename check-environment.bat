@@ -234,7 +234,7 @@ echo Or install tools manually using winget (Windows Package Manager):
 echo   Git:      winget install Git.Git
 echo   Java:     winget install Microsoft.OpenJDK.17
 echo   Maven:    winget install Apache.Maven
-echo   Python:   winget install Python.Python.3.11
+echo   Python:   winget install Python.Python.3.12
 echo   Node.js:  winget install OpenJS.NodeJS.LTS
 echo   VS Code:  winget install Microsoft.VisualStudioCode
 echo.

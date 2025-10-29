@@ -150,28 +150,28 @@ if (Test-CommandExists python) {
     Write-Host "  ✓ Python is installed: $pythonVersion" -ForegroundColor Green
     $allChecks += @{Name="Python"; Status="OK"; Version=$pythonVersion}
     
-    # Check Python version (recommend 3.8+)
+    # Check Python version (required: 3.12)
     if ($pythonVersion -match 'Python (\d+)\.(\d+)\.?(\d*)') {
         $majorVersion = [int]$matches[1]
         $minorVersion = [int]$matches[2]
-        if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 8)) {
-            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (below recommended version 3.8)" -ForegroundColor Yellow
+        if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 12)) {
+            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (workshop requires Python 3.12)" -ForegroundColor Yellow
         }
     } elseif ($pythonVersion -match '(\d+)\.(\d+)') {
         $majorVersion = [int]$matches[1]
         $minorVersion = [int]$matches[2]
-        if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 8)) {
-            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (below recommended version 3.8)" -ForegroundColor Yellow
+        if ($majorVersion -lt 3 -or ($majorVersion -eq 3 -and $minorVersion -lt 12)) {
+            Write-Host "  ⚠ Warning: Python version is $majorVersion.$minorVersion (workshop requires Python 3.12)" -ForegroundColor Yellow
         }
     }
 } else {
     Write-Host "  ✗ Python is NOT installed" -ForegroundColor Red
     $allChecks += @{Name="Python"; Status="MISSING"; Version="N/A"}
     
-    if (Prompt-Install "Python 3.11") {
-        Write-Host "  Installing Python 3.11 (this may take 2-3 minutes)..." -ForegroundColor Cyan
+    if (Prompt-Install "Python 3.12") {
+        Write-Host "  Installing Python 3.12 (this may take 2-3 minutes)..." -ForegroundColor Cyan
         try {
-            winget install --id Python.Python.3.11 -e --source winget --silent --accept-package-agreements --accept-source-agreements
+            winget install --id Python.Python.3.12 -e --source winget --silent --accept-package-agreements --accept-source-agreements
             Write-Host "  ✓ Python installed successfully. Please restart your terminal." -ForegroundColor Green
         } catch {
             Write-Host "  ✗ Failed to install Python. Please install manually from https://www.python.org/downloads/" -ForegroundColor Red

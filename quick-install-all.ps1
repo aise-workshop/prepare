@@ -9,7 +9,7 @@ Write-Host " AI Workshop - Quick Install All Tools" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 Write-Host "WARNING: This script will install ALL required tools for the AI workshop." -ForegroundColor Yellow
-Write-Host "This includes: Git, Java JDK 17, Maven, Python 3.11, Node.js, VS Code" -ForegroundColor Yellow
+Write-Host "This includes: Git, Java JDK 17, Maven, Python 3.12, Node.js, VS Code" -ForegroundColor Yellow
 Write-Host "`nExisting installations will be preserved (not overwritten)." -ForegroundColor Cyan
 Write-Host "`nThis may take 10-15 minutes depending on your internet connection.`n" -ForegroundColor Cyan
 
@@ -86,7 +86,7 @@ Write-Host "`nInstalling required tools...`n" -ForegroundColor Cyan
 Install-Package -Name "Git" -WingetId "Git.Git" -CheckCommand "git --version"
 Install-Package -Name "Java JDK 17" -WingetId "Microsoft.OpenJDK.17" -CheckCommand "java -version"
 Install-Package -Name "Maven" -WingetId "Apache.Maven" -CheckCommand "mvn -version"
-Install-Package -Name "Python 3.11" -WingetId "Python.Python.3.11" -CheckCommand "python --version"
+Install-Package -Name "Python 3.12" -WingetId "Python.Python.3.12" -CheckCommand "python --version"
 Install-Package -Name "Node.js LTS" -WingetId "OpenJS.NodeJS.LTS" -CheckCommand "node --version"
 Install-Package -Name "Visual Studio Code" -WingetId "Microsoft.VisualStudioCode" -CheckCommand "code --version"
 
@@ -169,7 +169,7 @@ Tools processed:
 1. Git
 2. Java JDK 17
 3. Maven
-4. Python 3.11
+4. Python 3.12
 5. Node.js LTS
 6. Visual Studio Code
 

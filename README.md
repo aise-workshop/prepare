@@ -7,9 +7,9 @@ This package contains scripts to help you verify that your Windows computer has 
 The following tools will be checked:
 
 1. **Git** - Version control system
-2. **Java JDK** - Java Development Kit (recommended: JDK 17 or higher)
+2. **Java JDK** - Java Development Kit (**Required: JDK 17, 21 or higher**)
 3. **Maven** - Java project management tool
-4. **Python** - Python programming language (recommended: Python 3.8 or higher)
+4. **Python** - Python programming language (**Required: Python 3.12**)
 5. **pip** - Python package installer
 6. **Node.js** - JavaScript runtime (includes npm)
 7. **Docker** - Container platform (optional but recommended)
@@ -184,8 +184,8 @@ If installation fails with network errors:
 Before the workshop, make sure:
 
 - [ ] All required tools show green checkmarks (✓)
-- [ ] Java version is 17 or higher
-- [ ] Python version is 3.8 or higher
+- [ ] Java version is 17, 21 or higher
+- [ ] Python version is 3.12
 - [ ] Essential Python packages are installed
 - [ ] You have an IDE installed (VS Code or IntelliJ IDEA)
 - [ ] You've restarted your terminal after installations

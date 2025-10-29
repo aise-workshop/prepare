@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI4SE Workshop - Environment Check</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        
+        .section .repo-link {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .section .repo-link a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .section .repo-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .check-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .check-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .check-item.pass {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        
+        .check-item.fail {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+        
+        .check-item.loading {
+            border-color: #ffc107;
+            background: #fffbf0;
+        }
+        
+        .check-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .status-icon {
+            font-size: 2em;
+            min-width: 40px;
+        }
+        
+        .check-title {
+            flex: 1;
+        }
+        
+        .check-title h3 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        
+        .check-title .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+        
+        .badge.required {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .badge.optional {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .check-info {
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 55px;
+        }
+        
+        .install-info {
+            margin-left: 55px;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .install-info h4 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        
+        .install-method {
+            margin: 10px 0;
+        }
+        
+        .install-method strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .install-method code {
+            background: #f1f3f5;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        .note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .summary h2 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .summary.all-pass {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .summary.some-fail {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8800 100%);
+        }
+        
+        .summary.fail {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AI4SE Workshop</h1>
+            <p>Environment Check - Verify your setup for the workshop</p>
+        </div>
+        
+        <div class="content" id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Checking your environment...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if command exists by trying to execute it
+        async function checkCommand(command, args = ['--version']) {
+            try {
+                // Note: This won't work in a browser due to security restrictions
+                // This is a placeholder for demonstration
+                return { success: false, output: 'Browser check not available' };
+            } catch (e) {
+                return { success: false, output: '' };
+            }
+        }
+
+        const checks = [
+            {
+                section: 'Part 1: Agent Backend Demo',
+                repo: 'https://github.com/WeiZhang101/agent-backend-demo',
+                items: [
+                    {
+                        name: 'Java JDK 21+',
+                        required: true,
+                        command: 'java',
+                        install: {
+                            winget: 'winget install Oracle.JDK.21',
+                            choco: 'choco install openjdk --version=21.0.0',
+                            link: 'https://www.oracle.com/java/technologies/downloads/#java21',
+                            note: 'OpenJDK alternatives: Temurin, Microsoft Build of OpenJDK'
+                        }
+                    },
+                    {
+                        name: 'Docker',
+                        required: false,
+                        command: 'docker',
+                        install: {
+                            winget: 'winget install Docker.DockerDesktop',
+                            choco: 'choco install docker-desktop',
+                            link: 'https://www.docker.com/products/docker-desktop/',
+                            note: 'Optional for PostgreSQL; required for running databases locally'
+                        }
+                    }
+                ]
+            },
+            {
+                section: 'Part 2: LangGraph Practice',
+                repo: 'https://github.com/demongodYY/OOCL_langgraph',
+                items: [
+                    {
+                        name: 'Python 3.12+',
+                        required: true,
+                        command: 'python',
+                        install: {
+                            winget: 'winget install Python.Python.3.12',
+                            choco: 'choco install python312',
+                            link: 'https://www.python.org/downloads/',
+                            note: 'After installation, create virtual environment: python -m venv venv'
+                        }
+                    }
+                ]
+            },
+            {
+                section: 'Part 3: JSP to Spring Boot Practice',
+                repo: 'https://github.com/aise-workshop/jsp2spring-boot-practise',
+                items: [
+                    {
+                        name: 'Maven',
+                        required: true,
+                        command: 'mvn',
+                        install: {
+                            winget: 'winget install Apache.Maven',
+                            choco: 'choco install maven',
+                            link: 'https://maven.apache.org/download.cgi',
+                            note: 'Required for Spring Boot: mvn spring-boot:run'
+                        }
+                    }
+                ]
+            },
+            {
+                section: 'Advanced: Tibco BW Migration CLI',
+                repo: 'https://github.com/aise-workshop/tibco-movie-practise',
+                items: [
+                    {
+                        name: 'Node.js',
+                        required: false,
+                        command: 'node',
+                        install: {
+                            winget: 'winget install OpenJS.NodeJS.LTS',
+                            choco: 'choco install nodejs-lts',
+                            link: 'https://nodejs.org/',
+                            note: 'Optional for advanced exercises; includes npm for TypeScript'
+                        }
+                    }
+                ]
+            },
+            {
+                section: 'Essential Tools',
+                repo: null,
+                items: [
+                    {
+                        name: 'Git',
+                        required: true,
+                        command: 'git',
+                        install: {
+                            winget: 'winget install Git.Git',
+                            choco: 'choco install git',
+                            link: 'https://git-scm.com/downloads',
+                            note: 'Required for cloning repositories'
+                        }
+                    }
+                ]
+            }
+        ];
+
+        function renderChecks() {
+            const content = document.getElementById('content');
+            let html = '<p style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-bottom: 20px;"><strong>⚠️ Note:</strong> This HTML version shows the expected checks. For actual environment checking, please run <code>env_check.py</code> or <code>env_check.bat</code></p>';
+
+            checks.forEach(section => {
+                html += `
+                    <div class="section">
+                        <h2>${section.section}</h2>
+                        ${section.repo ? `<span class="repo-link">Repository: <a href="${section.repo}" target="_blank">${section.repo}</a></span>` : ''}
+                `;
+
+                section.items.forEach(item => {
+                    // For demo purposes, show as not checked
+                    html += `
+                        <div class="check-item loading">
+                            <div class="check-header">
+                                <div class="status-icon">❓</div>
+                                <div class="check-title">
+                                    <h3>${item.name} <span class="badge ${item.required ? 'required' : 'optional'}">${item.required ? 'Required' : 'Optional'}</span></h3>
+                                </div>
+                            </div>
+                            <div class="install-info">
+                                <h4>📦 Installation Instructions:</h4>
+                                ${item.install.winget ? `
+                                <div class="install-method">
+                                    <strong>Using Winget:</strong>
+                                    <code>${item.install.winget}</code>
+                                </div>
+                                ` : ''}
+                                ${item.install.choco ? `
+                                <div class="install-method">
+                                    <strong>Using Chocolatey:</strong>
+                                    <code>${item.install.choco}</code>
+                                </div>
+                                ` : ''}
+                                ${item.install.link ? `
+                                <div class="install-method">
+                                    <strong>Manual Installation:</strong>
+                                    <code><a href="${item.install.link}" target="_blank">${item.install.link}</a></code>
+                                </div>
+                                ` : ''}
+                                ${item.install.note ? `<div class="note">💡 ${item.install.note}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            });
+
+            html += `
+                <div class="summary">
+                    <h2>🎯 Ready to Check?</h2>
+                    <p>This HTML page shows all required tools and installation instructions.</p>
+                    <p style="margin-top: 10px;">To actually check your environment, please run:</p>
+                    <p style="margin-top: 15px; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px;">
+                        python env_check.py
+                    </p>
+                    <p style="margin-top: 5px;">or</p>
+                    <p style="margin-top: 5px; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px;">
+                        env_check.bat
+                    </p>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        // Render on load
+        setTimeout(renderChecks, 500);
+    </script>
+</body>
+</html>
+
